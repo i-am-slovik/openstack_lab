@@ -1,0 +1,24 @@
+pipeline {
+    agent any
+    
+    environment {
+        GITHUB_TOKEN = credentials('github-token')
+        SSH_KEY = credentials('ubuntu@test')
+    }
+
+    stages {
+        stage('Clone Repository to Test Server') {
+            steps {
+                script {
+                    sh '''
+                    ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ubuntu@192.168.4.108 <<EOF
+                    rm -rf ~/openstack_lab
+                    git clone https://$GITHUB_TOKEN@github.com/i-am-slovik/openstack_lab.git ~/openstack_lab
+                    exit
+                    EOF
+                    '''
+                }
+            }
+        }
+    }
+}
