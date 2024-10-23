@@ -1,0 +1,7 @@
+---
+- name: Deploy Kubernetes Control Plane
+  hosts: control_plane
+  become: true  # Use become for privilege escalation
+  tasks:
+    - name: Ping control plane nodes
+      ping:

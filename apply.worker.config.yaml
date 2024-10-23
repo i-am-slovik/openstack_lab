@@ -1,0 +1,7 @@
+---
+- name: Apply Worker Node Configuration
+  hosts: worker_nodes
+  become: true  # Use become for privilege escalation
+  tasks:
+    - name: Ping worker nodes
+      ping:

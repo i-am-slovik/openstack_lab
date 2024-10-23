@@ -1,0 +1,7 @@
+---
+- name: Cleanup Tasks
+  hosts: kubernetes
+  become: true  # Use become for privilege escalation
+  tasks:
+    - name: Ping all Kubernetes nodes for cleanup verification
+      ping:

@@ -1,0 +1,7 @@
+---
+- name: Deploy Kubernetes Worker Nodes
+  hosts: worker_nodes
+  become: true  # Use become for privilege escalation
+  tasks:
+    - name: Ping worker nodes
+      ping:
