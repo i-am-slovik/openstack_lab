@@ -3,14 +3,14 @@ pipeline {
 
     environment {
         GITHUB_TOKEN = credentials('github-token')
-        SSH_KEY = credentials('ubuntu@test') // Optional if you plan to use it in playbooks
+        SSH_KEY = credentials('ubuntu@test')
+        PATH = "/home/ubuntu/.local/bin:${env.PATH}"  // Add Ansible to the PATH
     }
 
     stages {
         stage('Clone Repository') {
             steps {
                 script {
-                    // Clone the repository directly to the Jenkins server
                     sh '''
                     rm -rf ~/openstack_lab
                     git clone https://$GITHUB_TOKEN@github.com/i-am-slovik/openstack_lab.git ~/openstack_lab
@@ -22,18 +22,16 @@ pipeline {
         stage('Run Ansible Playbooks') {
             steps {
                 script {
-                    // Run the Ansible playbooks in the right order
                     sh '''
                     cd ~/openstack_lab
-                    ansible-playbook deploy_ctl.yaml  # Set up the control plane
-                    ansible-playbook apply_config.yaml  # Apply initial configuration
-                    ansible-playbook deploy_workers.yaml  # Configure worker nodes
-                    ansible-playbook apply_worker_config.yaml  # Apply configurations that depend on workers
-                    ansible-playbook cleanup.yaml  # Perform cleanup tasks
+                    ansible-playbook deploy_ctl.yaml
+                    ansible-playbook apply_config.yaml
+                    ansible-playbook deploy_workers.yaml
+                    ansible-playbook apply_worker_config.yaml
+                    ansible-playbook cleanup.yaml
                     '''
                 }
             }
         }
     }
 }
-
