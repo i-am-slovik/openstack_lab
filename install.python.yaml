@@ -1,0 +1,12 @@
+- hosts: all
+  tasks:
+    - name: Install Python 3 (Debian/Ubuntu)
+      raw: |
+        apt update
+        apt install -y python3
+      when: ansible_os_family == "Debian"
+
+    - name: Install Python 3 (Red Hat/CentOS)
+      raw: |
+        yum install -y python3
+      when: ansible_os_family == "RedHat"
