@@ -1,7 +1,12 @@
 - hosts: kubernetes
   gather_facts: no  # Disable fact gathering
   tasks:
-    - name: Install Python 3 (Debian/Ubuntu)
+    - name: Update the apt package index
+      raw: apt-get update
+
+    - name: Install required packages
       raw: |
-        apt update
-        apt install -y python3 python3-pip python3-venv
+        apt-get install -y python3 python3-apt python3-pip python3-venv openssh-server
+
+    - name: Ensure OpenSSH server is running
+      raw: systemctl enable ssh && systemctl start ssh
