@@ -1,4 +1,5 @@
 - hosts: all
+  gather_facts: no  # Disable fact gathering
   tasks:
     - name: Install Python 3 (Debian/Ubuntu)
       raw: |
