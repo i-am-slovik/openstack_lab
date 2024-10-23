@@ -1,5 +1,5 @@
 - hosts: kubernetes
-  gather_facts: no  # Disable fact gathering
+  gather_facts: no  # Disable fact gathering 
   tasks:
     - name: Update the apt package index
       raw: apt-get update
