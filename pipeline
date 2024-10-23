@@ -24,11 +24,11 @@ pipeline {
                 script {
                     sh '''
                     cd ~/openstack_lab
-                    ansible-playbook deploy.ctl.yaml
-                    ansible-playbook apply.config.yaml
-                    ansible-playbook deploy.workers.yaml
-                    ansible-playbook apply.worker.config.yaml
-                    ansible-playbook cleanup.yaml
+                    ansible-playbook deploy.ctl.yaml -i inventory.ini
+                    ansible-playbook apply.config.yaml -i inventory.ini
+                    ansible-playbook deploy.workers.yaml -i inventory.ini
+                    ansible-playbook apply.worker.config.yaml -i inventory.ini
+                    ansible-playbook cleanup.yaml -i inventory.ini
                     '''
                 }
             }
