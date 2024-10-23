@@ -24,7 +24,7 @@ pipeline {
                 script {
                     sh '''
                     cd ~/openstack_lab
-                    // ansible-playbook install.python.yaml -i inventory.ini --private-key="$SSH_KEY"                       // uncomment to install python
+                    # ansible-playbook install.python.yaml -i inventory.ini --private-key="$SSH_KEY"
                     ansible-playbook deploy.ctl.yaml -i inventory.ini --private-key="$SSH_KEY"
                     ansible-playbook apply.config.yaml -i inventory.ini --private-key="$SSH_KEY"
                     ansible-playbook deploy.workers.yaml -i inventory.ini --private-key="$SSH_KEY"
