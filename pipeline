@@ -27,7 +27,7 @@ pipeline {
                     ansible-playbook deploy.ctl.yaml
                     ansible-playbook apply.config.yaml
                     ansible-playbook deploy.workers.yaml
-                    ansible-playbook apply.worker_config.yaml
+                    ansible-playbook apply.worker.config.yaml
                     ansible-playbook cleanup.yaml
                     '''
                 }
