@@ -1,4 +1,2 @@
 # openstack_lab
-ggghgfgfhgf
-hgfhjkjhgJHGJHGJHG
-
+This repo contains files related to my lab
