@@ -1,17 +1,7 @@
 variable "my_home_ip" {}
 variable "my_work_ip" {}
 variable "my_phone_ip" {}
-variable "github_webhook_ips" {
-  type    = list(string)
-  default = [
-    "192.30.252.0/22",
-    "185.199.108.0/22",
-    "140.82.112.0/20",
-    "143.55.64.0/20",
-    "2a0a:a440::/29",
-    "2606:50c0::/32"
-  ]
-}
+variable "github_webhook_ips" {}
 
 resource "openstack_networking_secgroup_v2" "slovik_external_jumpbox" {
   name        = "slovik_external_jumpbox"
@@ -25,6 +15,7 @@ resource "openstack_networking_secgroup_rule_v2" "jumpbox_ssh_home" {
   port_range_min    = 22
   port_range_max    = 22
   remote_ip_prefix  = var.my_home_ip
+  ethertype         = "IPv4"
 }
 
 resource "openstack_networking_secgroup_rule_v2" "jumpbox_ssh_work" {
@@ -34,6 +25,7 @@ resource "openstack_networking_secgroup_rule_v2" "jumpbox_ssh_work" {
   port_range_min    = 22
   port_range_max    = 22
   remote_ip_prefix  = var.my_work_ip
+  ethertype         = "IPv4"
 }
 
 resource "openstack_networking_secgroup_rule_v2" "jumpbox_ssh_phone" {
@@ -43,6 +35,7 @@ resource "openstack_networking_secgroup_rule_v2" "jumpbox_ssh_phone" {
   port_range_min    = 22
   port_range_max    = 22
   remote_ip_prefix  = var.my_phone_ip
+  ethertype         = "IPv4"
 }
 
 resource "openstack_networking_secgroup_v2" "slovik_external_https_public" {
@@ -57,6 +50,7 @@ resource "openstack_networking_secgroup_rule_v2" "https_public" {
   port_range_min    = 443
   port_range_max    = 443
   remote_ip_prefix  = "0.0.0.0/0"
+  ethertype         = "IPv4"
 }
 
 resource "openstack_networking_secgroup_v2" "slovik_external_https_webhook" {
@@ -68,12 +62,12 @@ resource "openstack_networking_secgroup_rule_v2" "github_webhook_ingress" {
   for_each = toset(var.github_webhook_ips)
 
   direction         = "ingress"
-  ethertype         = can(regex(":", each.value)) ? "IPv6" : "IPv4"
   security_group_id = openstack_networking_secgroup_v2.slovik_external_https_webhook.id
   protocol          = "tcp"
   port_range_min    = 443
   port_range_max    = 443
   remote_ip_prefix  = each.value
+  ethertype         = "IPv4"
 }
 
 resource "openstack_networking_secgroup_v2" "slovik_external_https_trusted" {
@@ -88,6 +82,7 @@ resource "openstack_networking_secgroup_rule_v2" "https_trusted_home" {
   port_range_min    = 443
   port_range_max    = 443
   remote_ip_prefix  = var.my_home_ip
+  ethertype         = "IPv4"
 }
 
 resource "openstack_networking_secgroup_rule_v2" "https_trusted_work" {
@@ -97,6 +92,7 @@ resource "openstack_networking_secgroup_rule_v2" "https_trusted_work" {
   port_range_min    = 443
   port_range_max    = 443
   remote_ip_prefix  = var.my_work_ip
+  ethertype         = "IPv4"
 }
 
 resource "openstack_networking_secgroup_rule_v2" "https_trusted_phone" {
@@ -106,4 +102,5 @@ resource "openstack_networking_secgroup_rule_v2" "https_trusted_phone" {
   port_range_min    = 443
   port_range_max    = 443
   remote_ip_prefix  = var.my_phone_ip
+  ethertype         = "IPv4"
 }
