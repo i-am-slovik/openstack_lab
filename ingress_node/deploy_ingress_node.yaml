@@ -1,5 +1,5 @@
 - name: Deploy website from GitHub to ingress node
-  hosts: ingress
+  hosts: ingress_node
   become: yes
   tasks:
     - name: Ensure web root exists
@@ -16,9 +16,9 @@
 
     - name: Download nginx config from GitHub
       get_url:
-        url: https://raw.githubusercontent.com/i-am-slovik/openstack_lab/main/ingress_node/slovik.art.nginx.conf
+        url: https://raw.githubusercontent.com/i-am-slovik/openstack_lab/main/ingress_node/slovik.art
         dest: /etc/nginx/sites-available/slovik.art
-        mode: '0644'
+        mode: '0644'in
 
     - name: Enable nginx site
       file:
@@ -30,8 +30,7 @@
     - name: Test nginx config
       command: nginx -t
       register: nginx_test
-      failed_when: "'successful' not in nginx_test.stdout"
-
+      
     - name: Reload nginx
       service:
         name: nginx
