@@ -1,8 +1,16 @@
 variable "my_home_ip" {}
 variable "my_work_ip" {}
 variable "my_phone_ip" {}
-variable "github_ip" {
-  default = "140.82.112.0/20"  # example GitHub IP range, adjust if needed
+variable "github_webhook_ips" {
+  type    = list(string)
+  default = [
+    "192.30.252.0/22",
+    "185.199.108.0/22",
+    "140.82.112.0/20",
+    "143.55.64.0/20",
+    "2a0a:a440::/29",
+    "2606:50c0::/32"
+  ]
 }
 
 resource "openstack_networking_secgroup_v2" "slovik_external_jumpbox" {
@@ -56,13 +64,16 @@ resource "openstack_networking_secgroup_v2" "slovik_external_https_webhook" {
   description = "HTTPS only from GitHub"
 }
 
-resource "openstack_networking_secgroup_rule_v2" "https_webhook" {
-  security_group_id = openstack_networking_secgroup_v2.slovik_external_https_webhook.id
+resource "openstack_networking_secgroup_rule_v2" "github_webhook_ingress" {
+  for_each = toset(var.github_webhook_ips)
+
   direction         = "ingress"
+  ethertype         = can(regex(":", each.value)) ? "IPv6" : "IPv4"
+  security_group_id = openstack_networking_secgroup_v2.slovik_external_https_webhook.id
   protocol          = "tcp"
   port_range_min    = 443
   port_range_max    = 443
-  remote_ip_prefix  = var.github_ip
+  remote_ip_prefix  = each.value
 }
 
 resource "openstack_networking_secgroup_v2" "slovik_external_https_trusted" {
