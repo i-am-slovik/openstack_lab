@@ -1,0 +1,38 @@
+- name: Deploy website from GitHub to ingress node
+  hosts: ingress
+  become: yes
+  tasks:
+    - name: Ensure web root exists
+      file:
+        path: /var/www/slovik.art/html
+        state: directory
+        mode: '0755'
+
+    - name: Download index.html from GitHub
+      get_url:
+        url: https://raw.githubusercontent.com/i-am-slovik/openstack_lab/main/ingress_node/index.html
+        dest: /var/www/slovik.art/html/index.html
+        mode: '0644'
+
+    - name: Download nginx config from GitHub
+      get_url:
+        url: https://raw.githubusercontent.com/i-am-slovik/openstack_lab/main/ingress_node/slovik.art.nginx.conf
+        dest: /etc/nginx/sites-available/slovik.art
+        mode: '0644'
+
+    - name: Enable nginx site
+      file:
+        src: /etc/nginx/sites-available/slovik.art
+        dest: /etc/nginx/sites-enabled/slovik.art
+        state: link
+        force: yes
+
+    - name: Test nginx config
+      command: nginx -t
+      register: nginx_test
+      failed_when: "'successful' not in nginx_test.stdout"
+
+    - name: Reload nginx
+      service:
+        name: nginx
+        state: reloaded
