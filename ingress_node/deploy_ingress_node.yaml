@@ -18,7 +18,7 @@
       get_url:
         url: https://raw.githubusercontent.com/i-am-slovik/openstack_lab/main/ingress_node/slovik.art
         dest: /etc/nginx/sites-available/slovik.art
-        mode: '0644'in
+        mode: '0644'
 
     - name: Enable nginx site
       file:
@@ -30,7 +30,7 @@
     - name: Test nginx config
       command: nginx -t
       register: nginx_test
-      
+
     - name: Reload nginx
       service:
         name: nginx
