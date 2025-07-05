@@ -21,7 +21,7 @@ security groups
 
 routers
 	slovik_external_router
-		connected to external network "public_internet" # value will be: PCSS-BST-PUB2_EDU
+		connected to external network "internet" # value will be: PCSS-BST-PUB2_EDU
 		interface slovik_dmz_network
 networks
 	slovik_dmz_network 10.0.1.0/24

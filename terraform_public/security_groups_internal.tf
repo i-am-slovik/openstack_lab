@@ -32,7 +32,7 @@ resource "openstack_networking_secgroup_rule_v2" "ssh_from_dmz_jumpbox" {
 
 resource "openstack_networking_secgroup_v2" "slovik_internal_management_traffic" {
   name        = "slovik_internal_management_traffic"
-  description = "Allow management ports from slovik_internal_management_traffic"
+  description = "Allow management ports from slovik_internal_management network"
 }
 
 resource "openstack_networking_secgroup_rule_v2" "management_ports_from_internal_management" {
@@ -46,6 +46,11 @@ resource "openstack_networking_secgroup_rule_v2" "management_ports_from_internal
   security_group_id = openstack_networking_secgroup_v2.slovik_internal_management_traffic.id
 }
 
+resource "openstack_networking_secgroup_v2" "slovik_internal_https" {
+  name        = "slovik_internal_https"
+  description = "Allow HTTP/S ports from slovik_internal_https network"
+}
+
 resource "openstack_networking_secgroup_rule_v2" "https_ports_from_internal_https" {
   count             = 3
   direction         = "ingress"
@@ -54,5 +59,5 @@ resource "openstack_networking_secgroup_rule_v2" "https_ports_from_internal_http
   port_range_min    = element([443, 80, 8080], count.index)
   port_range_max    = element([443, 80, 8080], count.index)
   remote_ip_prefix  = var.networks.slovik_internal_https.cidr
-  security_group_id = openstack_networking_secgroup_v2.slovik_internal_https_traffic.id
+  security_group_id = openstack_networking_secgroup_v2.slovik_internal_https.id
 }
