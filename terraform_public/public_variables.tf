@@ -52,3 +52,11 @@ variable "networks" {
     internet                     = string
   })
 }
+
+#key
+
+variable "slovik_key" {
+  type        = string
+  description = "Name of the existing OpenStack keypair to use"
+  default     = "slovik"
+}
