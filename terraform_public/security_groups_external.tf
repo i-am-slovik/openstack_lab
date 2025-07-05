@@ -1,11 +1,4 @@
-variable "public_ips" {
-  type = object({
-    my_home_ip         = string
-    my_work_ip         = string
-    my_phone_ip        = string
-    github_webhook_ips = list(string)
-  })
-}
+#security groups external
 
 resource "openstack_networking_secgroup_v2" "slovik_dmz_jumpbox" {
   name        = "slovik_dmz_jumpbox"
