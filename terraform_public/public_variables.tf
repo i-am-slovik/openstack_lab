@@ -49,5 +49,6 @@ variable "networks" {
     slovik_dmz_network           = object({ cidr = string, dhcp = bool })
     slovik_internal_management   = object({ cidr = string, dhcp = bool })
     slovik_internal_https        = object({ cidr = string, dhcp = bool })
+    internet                     = string
   })
 }
