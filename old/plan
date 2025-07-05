@@ -1,41 +1,58 @@
-security groups:
-	external sec groups
-		slovik_external_jumpbox
+security groups
+	dmz sec groups
+		slovik_dmz_jumpbox
 			ssh for home ip, work ip, work ip
-		slovik_external_https_public
+		slovik_dmz_https_public
 			all 443
-		slovik_external_https_webhook
+		slovik_dmz_https_webhook
 			github 443
-		slovik_external_https_trusted
+		slovik_dmz_https_trusted
 			https from home, work, phone ip
-	dmz groups
-		slovik_dmz_https
-			https from ingress node
-		slovik_jumpbox
-			ssh from jumpbox node
 	internal groups
-		slovik_jenkins
-			ssh from jenkins
-		slovik_zabbix
-			10050/10051, 443, 80 from and to zabbix
+		slovik_internal_https_ingress
+			https from dmz ingress node 10.0.1.10/32
+		slovik_intenral_jumpbox_ingress
+			ssh from dmz jumpbox node 10.0.1.11/32
+		slovik_internal_management_traffic
+			22, 10050, 10051, postrgess port, etc from 10.0.3.0/24
+		slovik_internal_https_traffic
+			443, 80, 8080 from 10.0.4.0/24
 
 
+routers
+	slovik_external_router
+		connected to external network "public_internet" # value will be: PCSS-BST-PUB2_EDU
+		interface slovik_dmz_network
+networks
+	slovik_dmz_network 10.0.1.0/24
+		disable dhcp
+		port 10.0.1.10 #ingress_node
+		port 10.0.1.11 #jumpbox
+	slovik_internal_management 10.0.3.0/24
+		disable dhcp
+		port 10.0.3.10 #internal_https_ingress_node
+		port 10.0.3.11 #internal_jumpbox
+		port 10.0.3.12 #zabbix
+		port 10.0.3.13 #internal_management_13
+		port 10.0.3.14 #internal_management_14
+		port 10.0.3.15 #internal_management_15
+		port 10.0.3.16
+		port 10.0.3.17
+		port 10.0.3.18
+		port 10.0.3.19
+		port 10.0.3.20
+	slovik_internal_https 10.0.4.0/24
+		disable dhcp
+		port 10.0.4.10 #internal_https_ingress_node
+		port 10.0.4.11 #internal_https_11
+		port 10.0.4.12
+		port 10.0.4.13
+		port 10.0.4.14
+		port 10.0.4.15
+		port 10.0.4.16
+		port 10.0.4.17
+		port 10.0.4.18
+		port 10.0.4.19
+		port 10.0.4.20
 
-networks and vms + their security groups:
-	slovik_external_https
-		10.0.1.0/24
-			slovik_ingress + slovik_external_https_public,slovik_external_https_webhook,slovik_external_https_trusted
-	slovik_external_jumpbox
-		10.0.2.0/24
-			slovik_jumpbox + slovik_external_jumpbox
-	slovik_dmz
-		10.0.3.0/24
-			slovik_zabbix + slovik_dmz_https,slovik_jumpbox,
-			slovik_jenkins + slovik_dmz_https,slovik_jumpbox,
-			slovik_dmz_dns + slovik_jenkins,slovik_zabbix
-	slovik_internal
-		10.0.4.0/24
-			slovik_kubernetes_nodes + slovik_jenkins,slovik_zabbix
-			slovik_internal_dns + slovik_jenkins,slovik_zabbix
-		
 
