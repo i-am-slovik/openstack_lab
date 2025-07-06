@@ -20,39 +20,51 @@ security groups
 
 
 routers
-	slovik_external_router
-		connected to external network "internet" # value will be: PCSS-BST-PUB2_EDU
-		interface slovik_dmz_network
+  slovik_external_router
+    connected to external network "internet" # value will be: PCSS-BST-PUB2_EDU
+    interface slovik_dmz_network
+
 networks
-	slovik_dmz_network 10.0.1.0/24
-		disable dhcp
-		port 10.0.1.10 #ingress_node
-		port 10.0.1.11 #jumpbox
-	slovik_internal_management 10.0.3.0/24
-		disable dhcp
-		port 10.0.3.10 #internal_https_ingress_node
-		port 10.0.3.11 #internal_jumpbox
-		port 10.0.3.12 #zabbix
-		port 10.0.3.13 #internal_management_13
-		port 10.0.3.14 #internal_management_14
-		port 10.0.3.15 #internal_management_15
-		port 10.0.3.16
-		port 10.0.3.17
-		port 10.0.3.18
-		port 10.0.3.19
-		port 10.0.3.20
-	slovik_internal_https 10.0.4.0/24
-		disable dhcp
-		port 10.0.4.10 #internal_https_ingress_node
-		port 10.0.4.11 #internal_https_11
-		port 10.0.4.12
-		port 10.0.4.13
-		port 10.0.4.14
-		port 10.0.4.15
-		port 10.0.4.16
-		port 10.0.4.17
-		port 10.0.4.18
-		port 10.0.4.19
-		port 10.0.4.20
+  slovik_dmz_network 10.0.1.0/24
+    disable dhcp
+    port 10.0.1.10 # ingress_node
+    port 10.0.1.11 # jumpbox
+
+  slovik_intermediate_management 10.0.2.0/24
+    disable dhcp
+    port 10.0.2.10 # external jumpbox
+    port 10.0.2.11 # internal jumpbox
+
+  slovik_intermediate_https 10.0.3.0/24
+    port 10.0.3.10 # external ingress node
+    port 10.0.3.11 # internal ingress node
+
+  slovik_internal_management 10.0.4.0/24
+    disable dhcp
+    port 10.0.4.10 # internal_https_ingress_node
+    port 10.0.4.11 # internal_jumpbox
+    port 10.0.4.12 # zabbix
+    port 10.0.4.13 # internal_management_13
+    port 10.0.4.14 # internal_management_14
+    port 10.0.4.15 # internal_management_15
+    port 10.0.4.16
+    port 10.0.4.17
+    port 10.0.4.18
+    port 10.0.4.19
+    port 10.0.4.20
+
+  slovik_internal_https 10.0.5.0/24
+    disable dhcp
+    port 10.0.5.10 # internal_https_ingress_node
+    port 10.0.5.11 # internal_https_11
+    port 10.0.5.12
+    port 10.0.5.13
+    port 10.0.5.14
+    port 10.0.5.15
+    port 10.0.5.16
+    port 10.0.5.17
+    port 10.0.5.18
+    port 10.0.5.19
+    port 10.0.5.20
 
 
