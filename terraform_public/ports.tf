@@ -45,6 +45,8 @@ locals {
   }
 }
 
+# dmz
+
 resource "openstack_networking_port_v2" "slovik_dmz_ports" {
   for_each  = local.slovik_dmz_ports_map
   name      = each.key
@@ -56,27 +58,31 @@ resource "openstack_networking_port_v2" "slovik_dmz_ports" {
   }
 }
 
-resource "openstack_networking_port_v2" "slovik_intermediate_management_ports" {
-  for_each = local.slovik_intermediate_management_ports_map
+# intermediate 
 
-  name                = each.key
-  network_id          = openstack_networking_network_v2.slovik_intermediate_management.id
-  admin_state_up      = true
+resource "openstack_networking_port_v2" "slovik_intermediate_management_ports" {
+  for_each   = local.slovik_intermediate_management_ports_map
+  name       = each.key
+  network_id = openstack_networking_network_v2.slovik_intermediate_management.id
+
   fixed_ip {
+    subnet_id  = openstack_networking_subnet_v2.slovik_intermediate_management.id
     ip_address = each.value
   }
 }
 
 resource "openstack_networking_port_v2" "slovik_intermediate_https_ports" {
-  for_each = local.slovik_intermediate_https_ports_map
+  for_each   = local.slovik_intermediate_https_ports_map
+  name       = each.key
+  network_id = openstack_networking_network_v2.slovik_intermediate_https.id
 
-  name                = each.key
-  network_id          = openstack_networking_network_v2.slovik_intermediate_https.id
-  admin_state_up      = true
   fixed_ip {
+    subnet_id  = openstack_networking_subnet_v2.slovik_intermediate_https.id
     ip_address = each.value
   }
 }
+
+# internal 
 
 resource "openstack_networking_port_v2" "slovik_internal_management_ports" {
   for_each  = local.slovik_internal_management_ports_map

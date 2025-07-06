@@ -11,7 +11,7 @@ resource "openstack_networking_secgroup_rule_v2" "https_from_dmz_ingress" {
   protocol          = "tcp"
   port_range_min    = 443
   port_range_max    = 443
-  remote_ip_prefix  = "${var.dmz_ips.ingress_node}/32"
+  remote_ip_prefix  = "${var.intermediate_ips.external_ingress_node}/32"
   security_group_id = openstack_networking_secgroup_v2.slovik_internal_https_ingress.id
 }
 
@@ -26,7 +26,7 @@ resource "openstack_networking_secgroup_rule_v2" "ssh_from_dmz_jumpbox" {
   protocol          = "tcp"
   port_range_min    = 22
   port_range_max    = 22
-  remote_ip_prefix  = "${var.dmz_ips.jumpbox}/32"
+  remote_ip_prefix  = "${var.intermediate_ips.external_jumpbox}/32"
   security_group_id = openstack_networking_secgroup_v2.slovik_internal_jumpbox_ingress.id
 }
 
