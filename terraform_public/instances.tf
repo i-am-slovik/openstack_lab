@@ -34,12 +34,11 @@ resource "openstack_compute_instance_v2" "slovik_jumpbox" {
 
 # instances internal basic
 
-# Instance: slovik_internal_jumpbox
 resource "openstack_compute_instance_v2" "slovik_internal_jumpbox" {
-  name        = "slovik_internal_jumpbox"
-  image_id    = "31f8a181-633b-42ee-8c26-8c2d2656db49"
-  flavor_id   = "c4-4"
-  key_pair    = var.slovik_key
+  name       = "slovik_internal_jumpbox"
+  image_id   = "31f8a181-633b-42ee-8c26-8c2d2656db49"
+  flavor_id  = "c4-4"
+  key_pair   = var.slovik_key
 
   security_groups = [
     "slovik_internal_jumpbox_ingress",
@@ -47,20 +46,19 @@ resource "openstack_compute_instance_v2" "slovik_internal_jumpbox" {
   ]
 
   network {
-    port = openstack_networking_port_v2.slovik_intermediate_management_internal_jumpbox_port.id
+    port = openstack_networking_port_v2.slovik_intermediate_management_ports["slovik_intermediate_management_internal_jumpbox_port"].id
   }
 
   network {
-    port = openstack_networking_port_v2.slovik_internal_management_internal_jumpbox_port.id
+    port = openstack_networking_port_v2.slovik_internal_management_ports["slovik_internal_management_internal_jumpbox_port"].id
   }
 }
 
-# Instance: slovik_internal_ingress_node
 resource "openstack_compute_instance_v2" "slovik_internal_ingress_node" {
-  name        = "slovik_internal_ingress_node"
-  image_id    = "31f8a181-633b-42ee-8c26-8c2d2656db49"
-  flavor_id   = "c4-4"
-  key_pair    = var.slovik_key
+  name       = "slovik_internal_ingress_node"
+  image_id   = "31f8a181-633b-42ee-8c26-8c2d2656db49"
+  flavor_id  = "c4-4"
+  key_pair   = var.slovik_key
 
   security_groups = [
     "slovik_internal_https_ingress",
@@ -69,15 +67,14 @@ resource "openstack_compute_instance_v2" "slovik_internal_ingress_node" {
   ]
 
   network {
-    port = openstack_networking_port_v2.slovik_intermediate_https_internal_ingress_node_port.id
+    port = openstack_networking_port_v2.slovik_intermediate_https_ports["slovik_intermediate_https_internal_ingress_node_port"].id
   }
 
   network {
-    port = openstack_networking_port_v2.slovik_internal_management_internal_ingress_node_port.id
+    port = openstack_networking_port_v2.slovik_internal_management_ports["slovik_internal_management_internal_ingress_node_port"].id
   }
 
   network {
-    port = openstack_networking_port_v2.slovik_internal_https_internal_ingress_node_port.id
+    port = openstack_networking_port_v2.slovik_internal_https_ports["slovik_internal_https_internal_ingress_node_port"].id
   }
 }
-
