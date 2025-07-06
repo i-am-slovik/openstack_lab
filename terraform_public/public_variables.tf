@@ -16,6 +16,15 @@ variable "dmz_ips" {
   })
 }
 
+variable "intermediate_ips" {
+  type = object({
+    external_jumpbox           = string
+    internal_jumpbox           = string
+    external_ingress_node      = string
+    internal_ingress_node      = string
+  })
+}
+
 variable "internal_ips" {
   type = object({
     internal_management_internal_ingress_node    = string

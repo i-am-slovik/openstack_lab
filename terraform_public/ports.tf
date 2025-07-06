@@ -6,6 +6,16 @@ locals {
     "slovik_jumpbox_port"      = var.dmz_ips.jumpbox
   }
 
+  slovik_intermediate_management_ports_map = {
+    "slovik_intermediate_management_external_jumpbox_port" = var.intermediate_ips.external_jumpbox
+    "slovik_intermediate_management_internal_jumpbox_port" = var.intermediate_ips.internal_jumpbox
+  }
+
+  slovik_intermediate_https_ports_map = {
+    "slovik_intermediate_https_external_ingress_node_port" = var.intermediate_ips.external_ingress_node
+    "slovik_intermediate_https_internal_ingress_node_port" = var.intermediate_ips.internal_ingress_node
+  }
+
   slovik_internal_management_ports_map = {
     "slovik_internal_management_internal_ingress_node_port" = var.internal_ips.internal_management_internal_ingress_node
     "slovik_internal_management_internal_jumpbox_port"      = var.internal_ips.internal_management_internal_jumpbox
@@ -42,6 +52,28 @@ resource "openstack_networking_port_v2" "slovik_dmz_ports" {
 
   fixed_ip {
     subnet_id  = openstack_networking_subnet_v2.slovik_dmz_subnet.id
+    ip_address = each.value
+  }
+}
+
+resource "openstack_networking_port_v2" "slovik_intermediate_management_ports" {
+  for_each = local.slovik_intermediate_management_ports_map
+
+  name                = each.key
+  network_id          = openstack_networking_network_v2.slovik_intermediate_management.id
+  admin_state_up      = true
+  fixed_ip {
+    ip_address = each.value
+  }
+}
+
+resource "openstack_networking_port_v2" "slovik_intermediate_https_ports" {
+  for_each = local.slovik_intermediate_https_ports_map
+
+  name                = each.key
+  network_id          = openstack_networking_network_v2.slovik_intermediate_https.id
+  admin_state_up      = true
+  fixed_ip {
     ip_address = each.value
   }
 }
