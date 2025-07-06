@@ -11,7 +11,7 @@ resource "openstack_compute_instance_v2" "slovik_ingress_node" {
   }
 
   network {
-    port = openstack_networking_port_v2.slovik_internal_ports["slovik_internal_https_external_ingress_node_port"].id
+    port = openstack_networking_port_v2.slovik_internal_https_ports["slovik_internal_https_external_ingress_node_port"].id
   }
 
   security_groups = ["slovik_dmz_https_trusted", "slovik_dmz_https_webhook"]
@@ -28,7 +28,7 @@ resource "openstack_compute_instance_v2" "slovik_jumpbox" {
   }
 
   network {
-    port = openstack_networking_port_v2.slovik_internal_ports["slovik_internal_management_external_jumpbox"].id
+    port = openstack_networking_port_v2.slovik_internal_management_ports["slovik_internal_management_external_jumpbox"].id
   }
 
   security_groups = ["slovik_dmz_jumpbox"]

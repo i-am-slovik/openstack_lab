@@ -28,9 +28,9 @@ variable "internal_ips" {
     internal_management_17                       = string
     internal_management_18                       = string
     internal_management_19                       = string
-    internal_management_external_jumpbox         = string
+    internal_management_20                       = string
     internal_https_internal_ingress_node         = string
-    internal_https_external_ingress_node         = string
+    internal_https_11                            = string
     internal_https_12                            = string
     internal_https_13                            = string
     internal_https_14                            = string
