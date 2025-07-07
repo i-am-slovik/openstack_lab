@@ -1,3 +1,26 @@
+# auth
+
+variable "auth_url" {
+  description = "Keystone authentication URL"
+  type        = string
+}
+
+variable "app_cred_id" {
+  description = "Application credential ID"
+  type        = string
+}
+
+variable "app_cred_secret" {
+  description = "Application credential secret"
+  type        = string
+  sensitive   = true
+}
+
+variable "region" {
+  description = "OpenStack region name"
+  type        = string
+}
+
 #IPs
 
 variable "public_ips" {
@@ -65,6 +88,8 @@ variable "networks" {
     internet                       = string
   })
 }
+
+#key
 
 #key
 

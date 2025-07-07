@@ -1,2 +1,7 @@
-terraform/
+old/
 secrets/
+*.tfstate
+*.tfstate.backup
+*.lock.hcl
+*.tfvars
+.terraform/
