@@ -1,0 +1,111 @@
+vms:
+  jumpbox:
+    count: 1
+    ips:
+      public: 203.0.113.10/32
+      management: 10.10.0.10/32
+      monitoring: 10.10.1.10/32
+
+  terraform_ansible_jenkins:
+    count: 1
+    ips:
+      management: 10.10.0.16/28
+      monitoring: 10.10.1.16/28
+      cluster: 10.10.4.16/28
+
+  zabbix_server:
+    count: 1
+    ips:
+      management: 10.10.0.12/32
+      monitoring: 10.10.1.12/32
+      db: 10.10.3.12/32
+
+  zabbix_db:
+    count: 1
+    ips:
+      management: 10.10.0.13/32
+      monitoring: 10.10.1.13/32
+      db: 10.10.3.13/32
+
+  nginx:
+    count: 2
+    ips:
+      public: 203.0.113.32/28
+      management: 10.10.0.32/28
+      monitoring: 10.10.1.32/28
+
+  elastic_stack_optional:
+    count: 1
+    ips:
+      management: 10.10.0.20/32
+      monitoring: 10.10.1.20/32
+
+  backup_vm:
+    count: 1
+    ips:
+      management: 10.10.0.21/32
+      monitoring: 10.10.1.21/32
+
+  kubernetes_masters:
+    count: 3
+    ips:
+      management: 10.10.0.48/28
+      monitoring: 10.10.1.48/28
+      cluster: 10.10.4.48/28
+
+  kubernetes_workers:
+    count: 5
+    ips:
+      management: 10.10.0.64/26
+      monitoring: 10.10.1.64/26
+      cluster: DHCP
+
+
+networks:
+  public:
+    description: Public network, accessible from outside
+    dhcp: yes
+    subnet: 203.0.113.0/24   # example public range or floating IP pool
+
+  management:
+    description: Admin access and management traffic
+    dhcp: no              # static IPs only for control, no chaos here
+    subnet: 10.10.0.0/24
+
+  monitoring:
+    description: Monitoring traffic (Zabbix, Elastic)
+    dhcp: no              # static IPs for servers
+    subnet: 10.10.1.0/24
+
+  db:
+    description: Database subnet, isolate DB traffic
+    dhcp: no              # static IPs mandatory
+    subnet: 10.10.3.0/24
+
+  cluster:
+    description: Kubernetes node communication network
+    dhcp: yes             # workers can get dynamic IPs for scaling ease
+    subnet: 10.10.4.0/24
+
+
+terraform/
+├── modules/
+│   ├── other/
+│   │   ├── other.tf            # example
+│   └── openstack/
+│       ├── vms.tf              # How to create VMs in OpenStack
+│       ├── networks.tf         # How to create networks in OpenStack
+│       ├── ports.tf            # How to create ports in OpenStack
+│       ├── security_groups.tf  # How to create ports in OpenStack
+│       ├── security_rules.tf   # How to create ports in OpenStack
+│       └── variables.tf        # Variables needed by OpenStack modules
+├── envs/
+│   ├── dev/
+│   │   ├── main.tf         # Defines specific VMs & networks (names, connections)
+│   │   ├── variables.tf    # Variables for this environment (optional)
+│   │   └── terraform.tfvars# Values for variables (vm names, network names, counts)
+│   └── prod/
+│       ├── main.tf
+│       ├── variables.tf
+│       └── terraform.tfvars
+└── README.md               # Overview and instructions
